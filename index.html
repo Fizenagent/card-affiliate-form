@@ -234,7 +234,7 @@
     font-size: 13px; color: var(--purple);
     font-family: monospace; font-weight: 600;
     flex: 1; overflow: hidden;
-    text-overflow: ellipsis; white-space: nowrap;
+    text-decoration: none;
   }
   .copy-btn {
     background: var(--purple);
@@ -454,7 +454,7 @@
       const row = document.createElement('div');
       row.className = 'link-row';
       row.innerHTML = `
-        <span class="link-url">${url}</span>
+        <a class="link-url" href="${url}" target="_blank">${url}</a>
         <button class="copy-btn" onclick="copyText('${url}',this)">Copy</button>
       `;
       c.appendChild(row);
