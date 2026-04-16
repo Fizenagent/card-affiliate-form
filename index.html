@@ -386,14 +386,6 @@
   function setStep(n) {
     [1,2,3].forEach(i => {
       document.getElementById(`s${i}`).classList.toggle('active', i === n);
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!email || !emailRegex.test(email)) {
-        document.getElementById('err-email').style.display = 'block';
-        valid = false;
-      } else {
-        document.getElementById('err-email').style.display = 'none';
-      }
     });
     [1,2].forEach(i => {
       const bar = document.getElementById(`bar${i}`);
