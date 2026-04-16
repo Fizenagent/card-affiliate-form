@@ -320,6 +320,14 @@
         <div class="err-msg" id="err-wallet">Invalid wallet address (32·44 characters).</div>
       </div>
 
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="your@email.com">
+        <div class="field-hint">Commission reports and program updates sent here.</div>
+        <div class="err-msg" id="err-email">Please enter a valid email address.</div>
+      </div>
+
+
       <button class="btn" onclick="handleSubmit()">Get my link →</button>
       <div class="terms">By submitting, you agree to Fizen's affiliate terms and conditions.</div>
     </div>
@@ -378,6 +386,14 @@
   function setStep(n) {
     [1,2,3].forEach(i => {
       document.getElementById(`s${i}`).classList.toggle('active', i === n);
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        document.getElementById('err-email').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('err-email').style.display = 'none';
+      }
     });
     [1,2].forEach(i => {
       const bar = document.getElementById(`bar${i}`);
@@ -405,14 +421,16 @@
   }
 
   async function handleSubmit() {
-    ['tg','wallet'].forEach(f => {
+    ['tg','wallet','email'].forEach(f => {
       document.getElementById(`err-${f}`)?.classList.remove('show');
     });
     document.getElementById('telegram').classList.remove('error');
     document.getElementById('wallet').classList.remove('error');
+    document.getElementById('email').classList.remove('error');
 
     const tg     = document.getElementById('telegram').value.trim();
     const wallet = document.getElementById('wallet').value.trim();
+    const email  = document.getElementById('email').value.trim();
 
     let ok = true;
     if (!tg) {
@@ -423,6 +441,12 @@
     if (!validateSolana(wallet)) {
       document.getElementById('wallet').classList.add('error');
       document.getElementById('err-wallet').classList.add('show');
+      ok = false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      document.getElementById('email').classList.add('error');
+      document.getElementById('err-email').classList.add('show');
       ok = false;
     }
     if (!ok) return;
@@ -440,6 +464,7 @@
           timestamp:     new Date().toISOString(),
           telegram_id:   tg,
           solana_wallet: wallet,
+          email:         email,
           ref_code:      refCode,
           ref_link:      links[0].url,
         })
